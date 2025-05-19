@@ -54,7 +54,7 @@ DB_PASSWORD=your_password
 Migrate database:
 
 ```bash
-php artisan migrate
+composer run dev
 ```
 
 ## Dokumentasi API (Scribe)
