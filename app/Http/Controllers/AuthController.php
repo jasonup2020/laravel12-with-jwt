@@ -31,4 +31,16 @@ class AuthController extends Controller
 
         return response()->json(compact('token'));
     }
+
+    public function webLogin(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (!$token = auth()->attempt($credentials)) {
+            return back()->withErrors(['email' => 'Login gagal']);
+        }
+
+        session(['jwt_token' => $token]);
+        return redirect('/users');
+    }
 }

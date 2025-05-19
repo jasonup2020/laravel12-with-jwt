@@ -14,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('hobis')->get();
+        $users = User::with('hobbies')->get();
         return response()->json($users);
     }
 
@@ -27,7 +27,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|unique:users',
             'password' => 'required',
-            'hobis' => 'array'
+            'hobbies' => 'array'
         ]);
 
         $user = User::create([
@@ -36,14 +36,14 @@ class UserController extends Controller
             'password' => bcrypt($request->password)
         ]);
 
-        foreach ($request->hobis as $hobi) {
+        foreach ($request->hobbies as $hobi) {
             Hobby::create([
                 'user_id' => $user->id,
                 'nama' => $hobi
             ]);
         }
 
-        return response()->json($user->load('hobis'), 201);
+        return response()->json($user->load('hobbies'), 201);
     }
 
     /**
@@ -51,7 +51,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::with('hobis')->findOrFail($id);
+        $user = User::with('hobbies')->findOrFail($id);
         return response()->json($user);
     }
 
@@ -68,16 +68,16 @@ class UserController extends Controller
             $user->update(['password' => bcrypt($request->password)]);
         }
 
-        $user->hobis()->delete();
+        $user->hobbies()->delete();
 
-        foreach ($request->hobis as $hobi) {
+        foreach ($request->hobbies as $hobi) {
             Hobby::create([
                 'user_id' => $user->id,
                 'nama' => $hobi
             ]);
         }
 
-        return response()->json($user->load('hobis'));
+        return response()->json($user->load('hobbies'));
     }
 
     /**
