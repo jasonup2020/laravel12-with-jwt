@@ -19,7 +19,7 @@ API ini menyediakan fitur CRUD untuk User dan relasi dengan Hobi, serta login & 
 Clone repositori:
 
 ```bash
-git clone git@github.com:username/repo-name.git
+git clone git@github.com:erwin-perdana/laravel12-with-jwt.git
 cd repo-name
 ```
 
