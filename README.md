@@ -21,22 +21,26 @@ Clone repositori:
 ```bash
 git clone git@github.com:username/repo-name.git
 cd repo-name
+```
 
 Install dependency:
 
 ```bash
 composer install
+```
 
 Salin file .env dan konfigurasi:
 
 ```bash
 cp .env.example .env
+```
 
 Generate key dan JWT secret:
 
 ```bash
 php artisan key:generate
 php artisan jwt:secret
+```
 
 ## Konfigurasi Database
 
@@ -51,6 +55,7 @@ Migrate database:
 
 ```bash
 php artisan migrate
+```
 
 ## Dokumentasi API (Scribe)
 
@@ -58,3 +63,4 @@ Generate Scribe:
 
 ```bash
 php artisan scribe:generate
+```
