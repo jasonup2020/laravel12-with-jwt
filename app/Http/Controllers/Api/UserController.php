@@ -5,43 +5,30 @@ namespace App\Http\Controllers\Api;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\Hobby;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
+    public function __construct(private UserService $userService)
+    {}
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::with('hobbies')->get();
+        $users = $this->userService->getAllUserWithHobbies();
         return response()->json($users);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|unique:users',
-            'password' => 'required',
-            'hobbies' => 'array'
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password)
-        ]);
-
-        foreach ($request->hobbies as $hobi) {
-            Hobby::create([
-                'user_id' => $user->id,
-                'nama' => $hobi
-            ]);
-        }
+        $user = $this->userService->storeUser($request->validated());
 
         return response()->json($user->load('hobbies'), 201);
     }
@@ -49,33 +36,18 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        $user = User::with('hobbies')->findOrFail($id);
+        $user->load('hobbies');
         return response()->json($user);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $user = User::findOrFail($id);
-
-        $user->update($request->only(['name', 'email']));
-        
-        if ($request->filled('password')) {
-            $user->update(['password' => bcrypt($request->password)]);
-        }
-
-        $user->hobbies()->delete();
-
-        foreach ($request->hobbies as $hobi) {
-            Hobby::create([
-                'user_id' => $user->id,
-                'nama' => $hobi
-            ]);
-        }
+        $this->userService->updateUser($request->validated(), $user);
 
         return response()->json($user->load('hobbies'));
     }
@@ -83,10 +55,9 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        $this->userService->destroyUser($user);
         return response()->json(['message' => 'User deleted']);
     }
 }

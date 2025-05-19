@@ -12,20 +12,24 @@ class UserService {
         return User::with('hobbies')->get();
     }
 
-    public function storeUser(array $data) 
+    public function storeUser(array $data): User
     {
-        DB::transaction(function () use ($data) {
+        return DB::transaction(function () use ($data) {
             $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password'])
             ]);
 
-            $hobbies = $this->splitHobbies($data['hobbies']);
+            if (!empty($data['hobbies'])) {
+                $hobbies = $this->splitHobbies($data['hobbies']);
 
-            foreach ($hobbies as $hobby) {
-                $user->hobbies()->create(['name' => $hobby]);
+                foreach ($hobbies as $hobby) {
+                    $user->hobbies()->create(['name' => $hobby]);
+                }
             }
+
+            return $user;
         });
     }
 
@@ -44,10 +48,12 @@ class UserService {
 
             $user->hobbies()->delete();
 
-            $hobbies = $this->splitHobbies($data['hobbies']);
+            if (!empty($data['hobbies'])) {
+                $hobbies = $this->splitHobbies($data['hobbies']);
 
-            foreach ($hobbies as $hobby) {
-                $user->hobbies()->create(['name' => $hobby]);
+                foreach ($hobbies as $hobby) {
+                    $user->hobbies()->create(['name' => $hobby]);
+                }
             }
         });
     }

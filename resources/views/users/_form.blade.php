@@ -10,22 +10,28 @@
 
             <div class="mb-4">
                 <label class="block text-gray-700 font-medium mb-1">Nama</label>
-                <input type="text" name="name" value="{{ old('name', $user->name) }}"
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500">
+                <input type="text" name="name" value="{{ old('name', $user->name) }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500 @error('name') border-red-500 @enderror"">
+                @error('name')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="mb-4">
                 <label class="block text-gray-700 font-medium mb-1">Email</label>
-                <input type="email" name="email" value="{{ old('email', $user->email) }}"
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500">
+                <input type="email" name="email" value="{{ old('email', $user->email) }}" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500 @error('email') border-red-500 @enderror">
+                @error('email')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="mb-4">
                 <label class="block text-gray-700 font-medium mb-1">
                     Password {{ $user->exists ? '(kosongkan jika tidak diubah)' : '' }}
                 </label>
-                <input type="password" name="password"
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500">
+                <input type="password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-blue-500 @error('password') border-red-500 @enderror">
+                @error('password')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class="mb-6">

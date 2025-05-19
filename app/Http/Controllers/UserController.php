@@ -22,7 +22,7 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('users._form', ['user' => null, 'hobbies' => []]);
+        return view('users._form', ['user' => new User(), 'hobbies' => []]);
     }
 
     public function store(StoreUserRequest $request)
