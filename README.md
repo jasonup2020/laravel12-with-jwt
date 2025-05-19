@@ -27,6 +27,7 @@ Install dependency:
 
 ```bash
 composer install
+npm install && npm run build
 ```
 
 Salin file .env dan konfigurasi:
@@ -54,7 +55,7 @@ DB_PASSWORD=your_password
 Migrate database:
 
 ```bash
-composer run dev
+php artisan migrate
 ```
 
 ## Dokumentasi API (Scribe)
@@ -63,4 +64,9 @@ Generate Scribe:
 
 ```bash
 php artisan scribe:generate
+```
+
+## Run Project
+```bash
+composer run dev
 ```
