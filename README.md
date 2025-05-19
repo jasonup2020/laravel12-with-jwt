@@ -20,7 +20,7 @@ Clone repositori:
 
 ```bash
 git clone git@github.com:erwin-perdana/laravel12-with-jwt.git
-cd repo-name
+cd laravel12-with-jwt
 ```
 
 Install dependency:
